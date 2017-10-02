@@ -30,7 +30,7 @@ for name, dh in res.getheaders():
 	print("Local datatime is %s" % str(ct))
 
 	delta = ct - dt
-	delta = delta.total_seconds()
+	delta = abs(delta.total_seconds())
 
 	print("Timedelta is %f seconds" % delta)
 
