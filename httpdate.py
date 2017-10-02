@@ -19,14 +19,29 @@ for name, dh in res.getheaders():
 		continue
 	if not dh.endswith(' GMT'):
 		raise Exception('Date not in GMT timezone')
-	print(dh)
+	print("Time from HTTP header is %s" % dh)
 	# Thu, 29 Dec 2016 19:39:39 GMT
 	dt = datetime.strptime(dh, '%a, %d %b %Y %H:%M:%S %Z')
+
+	# current time
+	ct = datetime.utcnow()
+
+	print("Remote datetime is %s" % str(dt))
+	print("Local datatime is %s" % str(ct))
+
+	delta = ct - dt
+	delta = delta.total_seconds()
+
+	print("Timedelta is %f seconds" % delta)
+
+	if delta < 60 * 10:	# minutes
+		exit(0)
+
 	# [[[[[YY]YY]MM]DD]hh]mm[.ss]
 	# date -u 201612291939.40
 	nt = dt.strftime('%Y%m%d%H%M.%S')
 	cmd = ['date', '-u', nt]
-	print(' '.join(cmd))
+	print("Executing command %s" % ' '.join(cmd))
 	p = Popen(cmd, stdout=PIPE, stderr=PIPE)
 	stdoutdata, stderrdata = p.communicate()
 	print("stdout=%s" % stdoutdata.strip())
