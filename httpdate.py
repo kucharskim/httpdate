@@ -40,7 +40,7 @@ for name, dh in res.getheaders():
 	# [[[[[YY]YY]MM]DD]hh]mm[.ss]
 	# date -u 201612291939.40
 	nt = dt.strftime('%Y%m%d%H%M.%S')
-	cmd = ['date', '-u', nt]
+	cmd = ['date', '-u', '-s', nt]
 	print("Executing command %s" % ' '.join(cmd))
 	p = Popen(cmd, stdout=PIPE, stderr=PIPE)
 	stdoutdata, stderrdata = p.communicate()
