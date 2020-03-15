@@ -1,6 +1,6 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 
-# Copyright (c) 2017 Mikolaj Kucharski <mikolaj@kucharski.name>
+# Copyright (c) 2017,2019,2020 Mikolaj Kucharski <mikolaj@kucharski.name>
 #
 # Permission to use, copy, modify, and/or distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -15,7 +15,10 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 from datetime import datetime
-from httplib import HTTPConnection
+try:
+	from httplib import HTTPConnection
+except ImportError:
+	from http.client import HTTPConnection
 from subprocess import Popen, PIPE
 from sys import exit
 
@@ -28,7 +31,7 @@ def main():
 		raise Exception("Wrong HTTP status code")
 
 	for name, dh in res.getheaders():
-		if name != 'date':
+		if name.lower() != 'date':
 			continue
 		if not dh.endswith(' GMT'):
 			raise Exception('Date not in GMT timezone')
