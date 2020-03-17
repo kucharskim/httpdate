@@ -1,0 +1,14 @@
+# /storage/.config/system.d/httpdate.service
+
+[Unit]
+Description=Set system date from HTTP header
+Before=kodi.service
+After=network.target network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/storage/.config/httpdate.py
+TimeoutSec=60s
+
+[Install]
+WantedBy=kodi.target
