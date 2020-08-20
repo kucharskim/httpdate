@@ -28,7 +28,7 @@ def main():
 	res = conn.getresponse()
 
 	if res.status not in [200, 301, 302]:
-		raise Exception("Wrong HTTP status code")
+		raise Exception("Wrong HTTP status code: {}".format(res.status))
 
 	for name, dh in res.getheaders():
 		if name.lower() != 'date':
@@ -36,34 +36,36 @@ def main():
 		if not dh.endswith(' GMT'):
 			raise Exception('Date not in GMT timezone')
 
-		print("Time from HTTP header is %s" % dh)
+		print("Time from HTTP header is {}".format(dh))
 		dt = datetime.strptime(dh, '%a, %d %b %Y %H:%M:%S %Z')
 
 		# current time
 		ct = datetime.utcnow().replace(microsecond=0)
 
-		print("Remote datetime is %s" % str(dt))
-		print("Local datatime is %s" % str(ct))
+		print("Remote datetime is {}".format(dt))
+		print("Local datatime is {}".format(ct))
 
-		delta = ct - dt
-		delta = abs(delta.total_seconds())
+		delta = int(round(abs((ct - dt).total_seconds())))
 
-		print("Timedelta is %d seconds" % delta)
+		print("Timedelta is {} seconds".format(delta))
 
 		if delta < 60 * 10:	# minutes
 			exit(0)
 
 		nt = dt.strftime('%Y%m%d%H%M.%S')
 		cmd = ['date', '-u', '-s', nt]
-		print("Executing command %s" % ' '.join(cmd))
+		print("Executing command {}".format(" ".join(cmd)))
 		p = Popen(cmd, stdout=PIPE, stderr=PIPE)
 		stdoutdata, stderrdata = p.communicate()
 
-		print("stdout=%s" % stdoutdata.strip())
-		print("stderr=%s" % stderrdata.strip())
-		print("code=%d" % p.returncode)
+		print("stdout={}".format(stdoutdata.strip()))
+		print("stderr={}".format(stderrdata.strip()))
+		print("code={}".format(p.returncode))
 
 		exit(p.returncode)
 
 if __name__ == '__main__':
-    main()
+	try:
+		main()
+	except KeyboardInterrupt:
+		pass
