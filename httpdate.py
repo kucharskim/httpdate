@@ -27,7 +27,7 @@ def main():
 	conn.request("HEAD", "/")
 	res = conn.getresponse()
 
-	if res.status not in [200, 301, 302]:
+	if res.status not in [200, 301, 302, 303, 307, 308]:
 		raise Exception("Wrong HTTP status code: {}".format(res.status))
 
 	for name, dh in res.getheaders():
