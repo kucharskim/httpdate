@@ -8,7 +8,8 @@ After=network.target network-online.target
 [Service]
 Type=oneshot
 ExecStart=/usr/bin/env python /storage/.config/httpdate.py
-TimeoutSec=60s
+TimeoutStartSec=1080s
+TimeoutStopSec=60s
 
 [Install]
 WantedBy=kodi.target
