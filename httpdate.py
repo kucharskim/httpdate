@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright (c) 2017,2019,2020 Mikolaj Kucharski <mikolaj@kucharski.name>
+# Copyright (c) 2017,2019,2020,2025 Mikolaj Kucharski <mikolaj@kucharski.name>
 #
 # Permission to use, copy, modify, and/or distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -60,8 +60,8 @@ def http_time(ret):
             ret.value = 0
             return
 
-        nt = dt.strftime("%Y%m%d%H%M.%S")
-        cmd = ["date", "-u", "-s", nt]
+        nt = dt.strftime("%m%d%H%M%Y.%S")
+        cmd = ["date", "-u", nt]
         print("Executing command {}".format(" ".join(cmd)))
         p = Popen(cmd, stdout=PIPE, stderr=PIPE)
         stdoutdata, stderrdata = p.communicate()
