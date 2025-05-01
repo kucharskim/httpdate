@@ -77,10 +77,10 @@ def http_time(ret):
         # the run, if stderr is not empty.
         if len(stderrdata) > 0:
             print("Command has non-empty stderr!")
-            ret.value = 101
+            ret.value = 2
             return
 
-        ret.value = 0 if p.returncode == 0 else 101
+        ret.value = 0 if p.returncode == 0 else 1
 
 
 def get_time():
@@ -110,9 +110,9 @@ def main():
         if ret == 0:
             return 0
         print("Failed unexpectedly with exit code {}".format(ret), file=sys.stderr)
-        if ret == 101:
+        if ret in (1, 2):
             print("Unrecoverable error, exiting.", file=sys.stderr)
-            return 101
+            return ret
         print("Sleeping for {} seconds...".format(2**num), file=sys.stderr)
         time.sleep(2**num)
 
