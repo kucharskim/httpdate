@@ -66,8 +66,8 @@ def http_time(ret):
         p = Popen(cmd, stdout=PIPE, stderr=PIPE)
         stdoutdata, stderrdata = p.communicate()
 
-        print("stdout={}".format(stdoutdata.strip()))
-        print("stderr={}".format(stderrdata.strip()))
+        print("stdout={}".format(stdoutdata.decode("utf-8").strip()))
+        print("stderr={}".format(stderrdata.decode("utf-8").strip()))
         print("code={}".format(p.returncode))
 
         ret.value = p.returncode
