@@ -60,8 +60,8 @@ def http_time(ret):
             ret.value = 0
             return
 
-        nt = dt.strftime("%m%d%H%M%Y.%S")
-        cmd = ["date", "-u", nt]
+        nt = dt.strftime("%Y-%m-%d %H:%M:%S")
+        cmd = ["date", "-u", "-s", nt]
         print("Executing command {}".format(" ".join(cmd)))
         p = Popen(cmd, stdout=PIPE, stderr=PIPE)
         stdoutdata, stderrdata = p.communicate()
