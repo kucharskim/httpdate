@@ -72,7 +72,7 @@ def http_time(ret):
         print("stderr={}".format(stderrdata.decode("utf-8").strip()))
         print("code={}".format(p.returncode))
 
-        ret.value = p.returncode
+        ret.value = 0 if p.returncode == 0 else 101
 
 
 def get_time():
@@ -102,6 +102,9 @@ def main():
         if ret == 0:
             return 0
         print("Failed unexpectedly with exit code {}".format(ret), file=sys.stderr)
+        if ret == 101:
+            print("Unrecoverable error, exiting.", file=sys.stderr)
+            return 101
         print("Sleeping for {} seconds...".format(2**num), file=sys.stderr)
         time.sleep(2**num)
 
