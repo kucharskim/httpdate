@@ -20,7 +20,7 @@ import multiprocessing
 import time
 import sys
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 try:
     from httplib import HTTPConnection
@@ -44,10 +44,12 @@ def http_time(ret):
             raise Exception("Date not in GMT timezone")
 
         print("Time from HTTP header is {}".format(dh))
-        dt = datetime.strptime(dh, "%a, %d %b %Y %H:%M:%S %Z")
+        dt = datetime.strptime(dh, "%a, %d %b %Y %H:%M:%S GMT")
+        dt = dt.replace(tzinfo=timezone.utc)
 
         # current time
         ct = datetime.utcnow().replace(microsecond=0)
+        ct = ct.replace(tzinfo=timezone.utc)
 
         print("Remote datetime is {}".format(dt))
         print("Local datatime is {}".format(ct))
@@ -60,7 +62,7 @@ def http_time(ret):
             ret.value = 0
             return
 
-        nt = dt.strftime("%Y-%m-%d %H:%M:%S")
+        nt = "@" + str(int(dt.timestamp()))
         cmd = ["date", "-u", "-s", nt]
         print("Executing command {}".format(" ".join(cmd)))
         p = Popen(cmd, stdout=PIPE, stderr=PIPE)
