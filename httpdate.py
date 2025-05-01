@@ -72,6 +72,14 @@ def http_time(ret):
         print("stderr={}".format(stderrdata.decode("utf-8").strip()))
         print("code={}".format(p.returncode))
 
+        # Command date from BusyBox when fails to set the time
+        # prints error on stderr and returns zero exit code. Fail
+        # the run, if stderr is not empty.
+        if len(stderrdata) > 0:
+            print("Command has non-empty stderr!")
+            ret.value = 101
+            return
+
         ret.value = 0 if p.returncode == 0 else 101
 
 
