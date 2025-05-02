@@ -20,7 +20,6 @@ import multiprocessing
 import socket
 import sys
 import time
-import traceback
 
 from datetime import datetime, timezone
 
@@ -37,7 +36,6 @@ def http_time(ret):
         conn.request("HEAD", "/")
     except socket.gaierror as ex:
         print("Connection failed:", ex)
-        traceback.print_exc()
         return
 
     res = conn.getresponse()
