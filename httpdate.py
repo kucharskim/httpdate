@@ -17,8 +17,10 @@
 from __future__ import print_function
 
 import multiprocessing
-import time
+import socket
 import sys
+import time
+import traceback
 
 from datetime import datetime, timezone
 
@@ -31,7 +33,13 @@ from subprocess import Popen, PIPE
 
 def http_time(ret):
     conn = HTTPConnection("www.google.com", timeout=30)
-    conn.request("HEAD", "/")
+    try:
+        conn.request("HEAD", "/")
+    except socket.gaierror as ex:
+        print("Connection failed:", ex)
+        traceback.print_exc()
+        return
+
     res = conn.getresponse()
 
     if res.status not in [200, 301, 302, 303, 307, 308]:
