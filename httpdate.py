@@ -16,6 +16,7 @@
 
 from __future__ import print_function
 
+import errno
 import multiprocessing
 import socket
 import sys
@@ -37,6 +38,12 @@ def http_time(ret):
     except socket.gaierror as ex:
         print("Connection failed:", ex)
         return
+    except OSError as ex:
+        if ex.errno == errno.ENETUNREACH:
+            print("Network is unreachable:", ex)
+            return
+        print("OSError occurred:", ex)
+        raise
 
     res = conn.getresponse()
 
